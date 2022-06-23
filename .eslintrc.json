@@ -26,6 +26,12 @@
             "unix"
         ],
         "no-trailing-spaces": "error",
+        "object-curly-newline": [
+            "error",
+            {
+                "min-props": 2
+            }
+        ],
         "object-curly-spacing": [
             "error",
             "always"

@@ -1,8 +1,5 @@
 import { AnalyticsBrowser } from '@segment/analytics-next'
 
-/**
- * Client for Segment Analytics
- */
 class Client {
     private analytics: AnalyticsBrowser
 
@@ -10,25 +7,14 @@ class Client {
         this.analytics = AnalyticsBrowser.load({ writeKey })
     }
 
-    /**
-     * Identify user
-     */
-    identify () {
-        this.analytics.identify()
+    identifyUser (data?: object) {
+        this.analytics.identify(data)
     }
 
-    /**
-     * Record pageview
-     */
-    page () {
+    pageview () {
         this.analytics.page()
     }
 
-    /**
-     * Record user action
-     * @param eventName Name of the action the user has performed
-     * @param properties Informations about the event
-     */
     track (eventName: string, properties?: object) {
         this.analytics.track(eventName, properties)
     }
