@@ -1,6 +1,6 @@
 {
-  "name": "guarana",
-  "version": "0.0.3",
+  "name": "@clicampo/guarana",
+  "version": "1.0.0",
   "type": "module",
   "exports": {
     ".": {
@@ -20,7 +20,7 @@
     "start": "tsx src/index.ts",
     "build": "unbuild"
   },
-  "author": "Rodrigo Godinho rodrigolegod@gmail.com",
+  "author": "Rodrigo Godinho rodrigo.godinho@clicampo.com.br",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^17.0.43",
