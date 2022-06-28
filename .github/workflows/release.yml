@@ -48,7 +48,6 @@ jobs:
           git_username: Automato
           newversion: ${{ steps.publish-semver.outputs.release-type }}
           push_version_commit: true
-          github_token: ${{ steps.auth.outputs.token }}
           npm_token: ${{ secrets.NPM_TOKEN }}
         if: steps.publish-semver.outputs.next-version != ''
 
