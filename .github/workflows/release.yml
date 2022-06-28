@@ -27,7 +27,7 @@ jobs:
           git-committer-name: Automato
           git-committer-email: Automato@clicampo.com.br
           release-candidate: "false"
-          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL_PRODUCTION }}
+          # slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL_PRODUCTION }}
           project-url: ${{ github.server_url }}/${{ github.repository }}
 
       - uses: actions/setup-node@v3
@@ -46,7 +46,7 @@ jobs:
         with:
           git_email: Automato@clicampo.com.br
           git_username: Automato
-          newversion: ${{ steps.publish-semver.outputs.next-version }}
+          newversion: ${{ steps.publish-semver.outputs.release-type }}
           push_version_commit: true
           github_token: ${{ steps.auth.outputs.token }}
           npm_token: ${{ secrets.NPM_TOKEN }}
