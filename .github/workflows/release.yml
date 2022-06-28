@@ -1,0 +1,56 @@
+name: Create new release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with: { fetch-depth: 0 }
+
+      - name: Get Token
+        id: auth
+        uses: peter-murray/workflow-application-token-action@v1
+        with:
+          application_id: ${{ secrets.APPLICATION_ID }}
+          application_private_key: ${{ secrets.APPLICATION_PRIVATE_KEY }}
+
+      - uses: clicampo/action-publish-semver-release@v1
+        id: publish-semver
+        with:
+          github-token: ${{ steps.auth.outputs.token }}
+          git-committer-name: Automato
+          git-committer-email: Automato@clicampo.com.br
+          release-candidate: "false"
+          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL_PRODUCTION }}
+          project-url: ${{ github.server_url }}/${{ github.repository }}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+        if: steps.publish-semver.outputs.next-version != ''
+
+      - run: npm install
+        if: steps.publish-semver.outputs.next-version != ''
+
+      - run: npm run build
+        if: steps.publish-semver.outputs.next-version != ''
+
+      - name: Version and publish to npm
+        uses: bcomnes/npm-bump@v2.0.2
+        with:
+          git_email: Automato@clicampo.com.br
+          git_username: Automato
+          newversion: ${{ steps.publish-semver.outputs.next-version }}
+          push_version_commit: true
+          github_token: ${{ steps.auth.outputs.token }}
+          npm_token: ${{ secrets.NPM_TOKEN }}
+        if: steps.publish-semver.outputs.next-version != ''
+
+      - run: echo "Releasing version ${{ steps.publish-semver.outputs.next-version }}"
+        if: steps.publish-semver.outputs.next-version != ''
