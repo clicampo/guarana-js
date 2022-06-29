@@ -52,7 +52,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           sed -E -i 's/\"version\": \".*\",/\"version\": \"${{ steps.publish-semver.outputs.next-version }}\",/' package.json
-          pnpm publish --access public --no-git-checks
+          npm publish --access public --no-git-checks
           git add package.json
           git commit -m 'chore: bump to version ${{ steps.publish-semver.outputs.next-version }}'
           git push
