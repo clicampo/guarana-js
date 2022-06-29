@@ -34,6 +34,7 @@ jobs:
         with:
           node-version: 16
           registry-url: "https://registry.npmjs.org"
+          scope: "@clicampo"
         if: steps.publish-semver.outputs.next-version != ''
 
       - uses: pnpm/action-setup@v2.2.2
