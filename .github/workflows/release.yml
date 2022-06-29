@@ -33,23 +33,28 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+          registry-url: "https://registry.npmjs.org"
         if: steps.publish-semver.outputs.next-version != ''
 
-      - run: npm install
-        if: steps.publish-semver.outputs.next-version != ''
-
-      - run: npm run build
-        if: steps.publish-semver.outputs.next-version != ''
-
-      - name: Version and publish to npm
-        uses: bcomnes/npm-bump@v2.0.2
+      - uses: pnpm/action-setup@v2.2.2
         with:
-          git_email: Automato@clicampo.com.br
-          git_username: Automato
-          newversion: ${{ steps.publish-semver.outputs.release-type }}
-          push_version_commit: true
-          npm_token: ${{ secrets.NPM_TOKEN }}
+          version: 6.0.2
+
+      - run: pnpm install
         if: steps.publish-semver.outputs.next-version != ''
+
+      - run: pnpm run build
+        if: steps.publish-semver.outputs.next-version != ''
+
+      - if: steps.publish-semver.outputs.next-version != ''
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          sed -E -i 's/\"version\": \".*\",/\"version\": \"${{ steps.publish-semver.outputs.next-version }}\",/' package.json
+          pnpm publish --access public --no-git-checks
+          git add package.json
+          git commit -m 'chore: bump to version ${{ steps.publish-semver.outputs.next-version }}'
+          git push
 
       - run: echo "Releasing version ${{ steps.publish-semver.outputs.next-version }}"
         if: steps.publish-semver.outputs.next-version != ''
