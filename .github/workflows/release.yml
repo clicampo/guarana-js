@@ -33,8 +33,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          registry-url: "https://registry.npmjs.org"
-          scope: "@clicampo"
         if: steps.publish-semver.outputs.next-version != ''
 
       - uses: pnpm/action-setup@v2.2.2
@@ -48,8 +46,9 @@ jobs:
         if: steps.publish-semver.outputs.next-version != ''
 
       - if: steps.publish-semver.outputs.next-version != ''
+        name: Bump and publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           sed -E -i 's/\"version\": \".*\",/\"version\": \"${{ steps.publish-semver.outputs.next-version }}\",/' package.json
           npm publish --access public --no-git-checks
