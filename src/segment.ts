@@ -1,10 +1,10 @@
-import { AnalyticsBrowser } from '@segment/analytics-next'
+import segment from '@segment/analytics-next'
 
 class Client {
-    private analytics: AnalyticsBrowser
+    private analytics: segment.AnalyticsBrowser
 
     constructor (writeKey: string) {
-        this.analytics = AnalyticsBrowser.load({ writeKey })
+        this.analytics = segment.AnalyticsBrowser.load({ writeKey })
     }
 
     identifyUser (data?: object) {
