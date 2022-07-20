@@ -41,6 +41,4 @@ class EventTracker {
     }
 }
 
-console.log('success!')
-
 export { EventTracker }
